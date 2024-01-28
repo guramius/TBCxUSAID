@@ -1,19 +1,38 @@
-// document.addEventListener("DOMContentLoaded", function () {
-//   function handleScroll() {
-//     const header = document.querySelector(".header-container");
-//     const scrollPosition = window.scrollY;
+document.addEventListener("DOMContentLoaded", function () {
+  let lastScrollTop = 0;
+  const header = document.querySelector(".header-container");
 
-//     if (scrollPosition > 10) {
-//       header.classList.add("headerColor");
-//     } else {
-//       header.classList.remove("headerColor");
-//     }
-//   }
+  function handleScroll() {
+    const scrollPosition = window.scrollY;
 
-//   handleScroll();
+    if (scrollPosition > 10) {
+      header.classList.add("headerColor");
+    } else {
+      header.classList.remove("headerColor");
+    }
 
-//   window.addEventListener("scroll", handleScroll);
-// });
+    // Mobile responsiveness logic
+    if (window.innerWidth <= 768) {
+      if (scrollPosition > lastScrollTop) {
+        header.style.top = "-100px";
+      } else {
+        header.style.top = "0";
+      }
+    } else {
+      header.style.top = "0";
+    }
+
+    lastScrollTop = scrollPosition;
+  }
+
+  handleScroll();
+
+  window.addEventListener("scroll", handleScroll);
+});
+
+const header = document.querySelector(".header-container");
+header.style.transition = "top 0.3s ease-in-out";
+
 // hamburger menu
 const hamburger = document.querySelector(".hamburger");
 const navMenu = document.querySelector(".nav-menu");
@@ -21,6 +40,7 @@ hamburger.addEventListener("click", () => {
   hamburger.classList.toggle("add");
   navMenu.classList.toggle("add");
 });
+
 // slider
 const images = [
   "img/usaid.webp",
@@ -57,13 +77,11 @@ function initSlider() {
 
     slidesContainer.appendChild(slide);
 
-    // Create a dot for each slide
     const dot = document.createElement("div");
     dot.className = "dot";
     dots.push(dot);
     dotsContainer.appendChild(dot);
 
-    // Add click event listener to each dot
     dot.addEventListener("click", () => {
       showSlide(i / imagesPerSlide);
     });
@@ -77,7 +95,7 @@ function showSlide(index) {
   const slides = document.getElementById("slides");
   currentSlide =
     (index + Math.ceil(images.length / imagesPerSlide)) %
-    Math.ceil(images.length / imagesPerSlide);  
+    Math.ceil(images.length / imagesPerSlide);
   const translateValue = -currentSlide * 100 + "%";
   slides.style.transform = `translateX(${translateValue})`;
 
@@ -105,7 +123,6 @@ document.addEventListener("DOMContentLoaded", initSlider);
 function toggleAccordion(header) {
   const item = header.parentNode;
 
-  // Close all other accordion items
   const accordionItems = document.querySelectorAll(".accordion-item");
   accordionItems.forEach((accordionItem) => {
     if (accordionItem !== item) {
@@ -114,14 +131,12 @@ function toggleAccordion(header) {
     }
   });
 
-  // Toggle the clicked accordion item
   item.classList.toggle("active");
   const content = item.querySelector(".accordion-content");
   if (item.classList.contains("active")) {
     content.style.display = "block";
   }
 
-  // Toggle the arrow rotation
   const arrow = header.querySelector(".accordion-arrow");
   arrow.classList.toggle("rotate");
 }
